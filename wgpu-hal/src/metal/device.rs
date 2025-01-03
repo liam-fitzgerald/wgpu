@@ -1409,6 +1409,14 @@ impl crate::Device for super::Device {
         shared_capture_manager.set_default_capture_scope(&default_capture_scope);
         shared_capture_manager.start_capture_with_scope(&default_capture_scope);
         default_capture_scope.begin_scope();
+
+        let capture_desc = metal::CaptureDescriptor::new();
+        capture_desc.set_capture_device(&device);
+        capture_desc.set_destination(metal::MTLCaptureDestination::GpuTraceDocument);
+        capture_desc.set_output_url("/Users/liamfitzgerald/urb/sword/nockapp/noon/testtrace.gputrace");
+ 
+        shared_capture_manager.start_capture(&capture_desc).unwrap();
+ 
         true
     }
     unsafe fn stop_capture(&self) {
